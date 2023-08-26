@@ -32,7 +32,7 @@ exports.login = async (req, res, next) => {
       problem: "UDE",
     });
   } else if (userExisted[0].password !== req.body.password.trim()) {
-    res.status(404).json({
+    res.status(401).json({
       message: "Please enter the correct password",
       problem: "UDE",
     });
