@@ -5,7 +5,6 @@ const p = document.querySelector("p");
 form.addEventListener("submit", sendSignUpData);
 async function sendSignUpData(e) {
   e.preventDefault();
-  console.log(data[2].value.trim() === data[3].value.trim());
   if (data[2].value.trim() === data[3].value.trim()) {
     try {
       let response = await fetch("http://localhost:9000/signup", {
