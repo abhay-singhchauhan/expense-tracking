@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <nav>
+      <div id="main">
+        <div><h3>Daily</h3></div>
+        <div><h3>Monthly</h3></div>
+        <div><h3>Yearly</h3></div>
+      </div>
+    </nav>
+    <main>
+      <div id="outer">
+        <!-- <div>
+          <div><h4>Date</h4></div>
+          <div>
+            <div><p>price</p></div>
+            <div><p>description</p></div>
+            <div><p>category</p></div>
+          </div> -->
+        </div>
+      </div>
+      <div>
+        <form action="submit" method="POST">
+          <input type="number" placeholder="price" name="price" required />
+          <input
+            type="text"
+            placeholder="description"
+            name="description"
+            required
+          />
+          <input type="text" placeholder="category" name="category" required />
+          <button>submit</button>
+        </form>
+      </div>
+    </main>
+  </body>
+  <script src="index.js"></script>
+</html>

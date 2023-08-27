@@ -1,12 +1,13 @@
 const express = require("express");
-
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const loginSignupRoute = require("./routes/login-signup");
-
 const db = require("./util/db");
+const loginSignupRoute = require("./routes/login-signup");
+const expenseRoute = require("./routes/expense");
+
 const app = express();
+
 app.use(express.json());
 
 app.use(
@@ -15,10 +16,8 @@ app.use(
   })
 );
 
+app.use(expenseRoute);
 app.use(loginSignupRoute);
-app.use("/", (req, res) => {
-  res.send("Hello World");
-});
 
 db.sync().then(() => {
   app.listen("9000");

@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 exports.signup = async (req, res, next) => {
   const parsedData = req.body;
+  console.log(req);
   try {
     const emailExists = await User.findAll({
       where: { email: parsedData.email },
@@ -29,6 +30,7 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
+  console.log(req.body);
   const userExisted = await User.findAll({
     where: {
       email: req.body.email,

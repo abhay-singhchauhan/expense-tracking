@@ -31,7 +31,7 @@ async function sendSignUpData(e) {
       }
     }
   } else {
-    p.innerText = "Password missmatch";
+    p.innerText = "Password mismatch";
     p.style.color = "red";
   }
 }
