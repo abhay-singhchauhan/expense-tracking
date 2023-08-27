@@ -15,30 +15,21 @@
       </div>
     </nav>
     <main>
-      <div id="outer">
-        <!-- <div>
-          <div><h4>Date</h4></div>
-          <div>
-            <div><p>price</p></div>
-            <div><p>description</p></div>
-            <div><p>category</p></div>
-          </div> -->
-        </div>
-      </div>
-      <div>
-        <form action="submit" method="POST">
-          <input type="number" placeholder="price" name="price" required />
-          <input
-            type="text"
-            placeholder="description"
-            name="description"
-            required
-          />
-          <input type="text" placeholder="category" name="category" required />
-          <button>submit</button>
-        </form>
-      </div>
+      <div id="outer"></div>
     </main>
+    <div id="form">
+      <form action="submit" method="POST">
+        <input type="number" placeholder="price" name="price" required />
+        <input
+          type="text"
+          placeholder="description"
+          name="description"
+          required
+        />
+        <input type="text" placeholder="category" name="category" required />
+        <button>submit</button>
+      </form>
+    </div>
   </body>
   <script src="index.js"></script>
 </html>

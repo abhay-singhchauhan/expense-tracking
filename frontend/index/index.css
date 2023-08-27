@@ -37,10 +37,93 @@ nav {
 main {
   margin-top: 20px;
 }
-#outer {
+
+#outer > div > div {
+  width: 100%;
+  text-align: center;
+}
+#outer > div > div:nth-child(3) {
+  cursor: pointer;
+  margin: auto;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  width: 20%;
+  background-color: rgb(255, 255, 255);
+}
+#outer > div > div:nth-child(3):hover {
+  background-color: rgb(233, 228, 228);
+}
+
+#outer > div > div:nth-child(3):active {
+  background-color: rgb(221, 219, 219);
+}
+
+#outer > div > div:nth-child(2) {
+  display: flex;
+  justify-content: space-around;
+}
+#outer > div > div div {
+  width: 30%;
+}
+#outer > div {
+  background-color: #b6e9e6;
+  margin: auto;
+  width: 60%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+/*form*/
+#form {
+  display: fixed;
+  background-color: aliceblue;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+form {
   margin: auto;
   width: 60%;
 }
-#outer > div > div:nth-child(1) {
-  text-align: center;
+input {
+  margin-bottom: 10px;
+  outline: none;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid grey;
+  background-color: aliceblue;
+}
+input:focus {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  border: none;
+}
+input::placeholder {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  color: black;
+}
+
+button {
+  cursor: pointer;
+  margin-top: 20px;
+  height: 40px;
+  color: white;
+  border-radius: 20px;
+  background-color: rgba(107, 196, 190, 255);
+  width: 100%;
+  border: 1px solid grey;
+}
+button:hover {
+  background-color: rgba(107, 208, 190);
+  transition: 0.2s;
+}
+button:active {
+  transition: 0.2s;
+  background-color: rgb(107, 223, 190);
 }

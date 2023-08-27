@@ -1,5 +1,16 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const path = require("path");
+
+function auth(name, id) {
+  const key = fs.readFileSync(
+    path.join(__dirname, "../", "/key", "/private.key"),
+    "utf-8"
+  );
+  return jwt.sign({ name: name, id: id }, key);
+}
 
 exports.signup = async (req, res, next) => {
   const parsedData = req.body;
@@ -36,7 +47,7 @@ exports.login = async (req, res, next) => {
       email: req.body.email,
     },
   });
-
+  console.log(userExisted);
   if (userExisted.length === 0) {
     res.status(404).json({
       message: "User dosen't existed, please register yourself",
@@ -49,7 +60,9 @@ exports.login = async (req, res, next) => {
       (error, success) => {
         if (success) {
           console.log(success);
+
           res.status(200).json({
+            auth: auth(userExisted[0].name, userExisted[0].id),
             message: "Login Successfull",
             problem: "Success",
           });

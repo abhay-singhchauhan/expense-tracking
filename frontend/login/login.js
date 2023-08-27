@@ -24,8 +24,11 @@ form.addEventListener("submit", (e) => {
         p.innerText = res.message;
         p.style.color = "red";
       } else if (res.problem === "Success") {
-        p.innerText = res.message;
-        p.style.color = "red";
+        localStorage.setItem(
+          "userDataExpenseTrackerApp",
+          JSON.stringify({ auth: res.auth })
+        );
+        window.location = "../index/index.html";
       }
     });
 });
