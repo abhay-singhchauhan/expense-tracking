@@ -1,9 +1,34 @@
 const form = document.querySelector("form");
 const input = document.querySelectorAll("input");
 const outer = document.getElementById("outer");
+const image = document.getElementById("iconImage");
+const form2 = document.getElementById("form");
+const cross = document.getElementById("cross");
+const cover = document.getElementById("cover");
+const premium = document.getElementById("Premium");
+//Site functionality
+image.addEventListener("click", () => {
+  image.setAttribute("class", "hidden");
+  form2.setAttribute("class", "");
+  cover.setAttribute("class", "");
+});
+
+cross.addEventListener("click", () => {
+  image.setAttribute("class", "");
+  form2.setAttribute("class", "hidden");
+  cover.setAttribute("class", "hidden");
+});
+
+cover.addEventListener("click", () => {
+  image.setAttribute("class", "");
+  form2.setAttribute("class", "hidden");
+  cover.setAttribute("class", "hidden");
+});
+
+//api functionality
 
 let token = JSON.parse(localStorage.getItem("userDataExpenseTrackerApp"));
-console.log(token);
+
 if (token === null) {
   window.location = "../login/login.html";
 }
@@ -26,6 +51,50 @@ function display(element) {
   outer.innerHTML = str;
 }
 
+premium.addEventListener("click", () => {
+  fetch("http://localhost:9000/payforpremium", {
+    headers: {
+      Authorization: token.auth,
+    },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res);
+      const options = {
+        key: res.key,
+        order_id: res.order.id,
+        amount: res.order.amount,
+        currency: res.order.currency,
+        name: "Abhays Store",
+        handler: async function (response) {
+          await axios.post(
+            "http://localhost:9000/updatestatus",
+            {
+              response,
+            },
+            {
+              headers: {
+                Authorization: token.auth,
+              },
+            }
+          );
+        },
+      };
+      console.log(options);
+      const rpObject = new Razorpay(options);
+
+      rpObject.open();
+      e.preventDefault();
+
+      rpObject.on("payment.failed", (e) => {
+        alert("failed");
+      });
+    })
+    .catch((err) => {});
+});
+
 function fetchData() {
   fetch("http://localhost:9000/getexpenses", {
     headers: {
@@ -36,12 +105,12 @@ function fetchData() {
       return res.json();
     })
     .then((res) => {
-      console.log(res);
-      display(res);
+      display(res.data);
+      if (res.isPremium) {
+        premium.innerText = "Premium User";
+      }
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 
 fetchData();
@@ -65,13 +134,12 @@ form.addEventListener("submit", (e) => {
       return res.json();
     })
     .then((res) => {
-      console.log(res);
       fetchData();
-    });
+    })
+    .catch((err) => {});
 });
 
 outer.addEventListener("click", (e) => {
-  console.log(e);
   if (e.target.parentElement.classList.contains("delete")) {
     const id = e.target.parentElement.parentElement.id;
     if (confirm("Are you sure, you want to delete this item")) {
@@ -92,9 +160,7 @@ outer.addEventListener("click", (e) => {
             alert(res.message);
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   }
 });

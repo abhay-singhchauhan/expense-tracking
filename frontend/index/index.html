@@ -7,17 +7,19 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
+    <div class="hidden" id="cover"></div>
     <nav>
       <div id="main">
-        <div><h3>Daily</h3></div>
-        <div><h3>Monthly</h3></div>
-        <div><h3>Yearly</h3></div>
+        <div><img src="../images/expense-tracker.png" alt="" /></div>
+        <div><button id="Premium">Buy Premium</button></div>
       </div>
     </nav>
     <main>
       <div id="outer"></div>
     </main>
-    <div id="form">
+    <div class="hidden" id="form">
+      <button id="cross">X</button>
+
       <form action="submit" method="POST">
         <input type="number" placeholder="price" name="price" required />
         <input
@@ -27,9 +29,12 @@
           required
         />
         <input type="text" placeholder="category" name="category" required />
-        <button>submit</button>
+        <button class="formButton">submit</button>
       </form>
     </div>
+    <img id="iconImage" src="../images/writeIcon.png.crdownload" alt="" />
   </body>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="index.js"></script>
 </html>

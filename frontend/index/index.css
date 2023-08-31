@@ -1,7 +1,8 @@
 * {
   padding: 0px;
   margin: 0px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 h3 {
   color: #b6e9e6;
@@ -9,28 +10,61 @@ h3 {
 nav {
   height: 60px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: rgba(107, 196, 190, 255);
+  background: rgb(67, 84, 244);
+  background: linear-gradient(
+    90deg,
+    rgba(67, 84, 244, 1) 0%,
+    rgba(31, 177, 192, 1) 100%
+  );
 }
+.hidden {
+  display: none;
+}
+
+#cover {
+  position: absolute;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 #main {
   height: 100%;
   margin: auto;
-  width: 50%;
+  width: 80%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
 }
 #main div {
-  padding-left: 10px;
-  padding-right: 10px;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  height: 95%;
+  height: 80%;
+  width: 20%;
 }
-#main div:hover {
+#main div img {
   cursor: pointer;
-  border-bottom: 3px solid white;
-  margin-bottom: -3px;
-  transition: 0.1s;
+  height: 100%;
+  width: 100%;
+}
+nav > #main > div > button {
+  cursor: pointer;
+  font-size: 17px;
+  background-color: rgb(218, 165, 32);
+  height: 80%;
+  color: white;
+  border-radius: 20px;
+  width: 100%;
+  border: 1px solid grey;
+}
+nav > #main > div > button:hover {
+  background-color: rgb(228, 178, 52);
+}
+nav > #main > div > button:active {
+  background-color: rgb(236, 189, 73);
 }
 
 /*main portion*/
@@ -39,8 +73,12 @@ main {
 }
 
 #outer > div > div {
+  color: grey;
   width: 100%;
   text-align: center;
+}
+#outer > div > div:nth-child(1) {
+  margin-bottom: 10px;
 }
 #outer > div > div:nth-child(3) {
   cursor: pointer;
@@ -60,29 +98,59 @@ main {
 }
 
 #outer > div > div:nth-child(2) {
+  padding: 10px 0 10px 0;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
   display: flex;
   justify-content: space-around;
 }
+
 #outer > div > div div {
   width: 30%;
 }
+#outer > div > div div:nth-child(1) {
+  border-right: 1px solid grey;
+}
+#outer > div > div div:nth-child(3) {
+  border-left: 1px solid grey;
+}
 #outer > div {
-  background-color: #b6e9e6;
+  background-color: white;
   margin: auto;
   width: 60%;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 10px;
+  border: 1px solid grey;
 }
 /*form*/
 #form {
-  display: fixed;
+  z-index: 2;
   background-color: aliceblue;
   position: fixed;
   bottom: 0%;
   width: 100%;
   padding-top: 20px;
   padding-bottom: 20px;
+  text-align: right;
+}
+
+#cross {
+  cursor: pointer;
+  position: relative;
+  top: -40px;
+  right: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  background-color: rgb(210, 91, 91);
+  border: 1px solid grey;
+  color: aliceblue;
+  font-size: 23px;
+}
+#cross:hover {
+  background-color: rgb(218, 105, 105);
 }
 
 form {
@@ -109,7 +177,7 @@ input::placeholder {
   color: black;
 }
 
-button {
+.formButton {
   cursor: pointer;
   margin-top: 20px;
   height: 40px;
@@ -119,11 +187,93 @@ button {
   width: 100%;
   border: 1px solid grey;
 }
-button:hover {
+.formButton:hover {
   background-color: rgba(107, 208, 190);
   transition: 0.2s;
 }
-button:active {
+.formButton:active {
   transition: 0.2s;
   background-color: rgb(107, 223, 190);
+}
+
+#iconImage {
+  cursor: pointer;
+  position: fixed;
+
+  bottom: 40px;
+  right: 40px;
+  width: 80px;
+}
+#iconImage:hover {
+  transition: 0.2s;
+  opacity: 0.9;
+}
+#iconImage:active {
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 1200px) {
+  form {
+    width: 70%;
+  }
+  #outer > div {
+    width: 70%;
+  }
+  #main {
+    width: 80%;
+  }
+  #main div {
+    width: 30%;
+  }
+  #cross {
+    right: 40px;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  form {
+    width: 80%;
+  }
+  #outer > div {
+    width: 80%;
+  }
+  #main {
+    width: 80%;
+  }
+  #main div {
+    width: 30%;
+  }
+  #cross {
+    right: 30px;
+  }
+  #iconImage {
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+/*Medium devices (landscape tablets, 768px and up) */
+/* @media only screen and (max-width: 768px) {
+} */
+
+@media only screen and (max-width: 600px) {
+  form {
+    width: 90%;
+  }
+  #outer > div {
+    width: 90%;
+  }
+  #main {
+    width: 90%;
+  }
+  #main div {
+    width: 40%;
+  }
+  #cross {
+    right: 10px;
+  }
+  #iconImage {
+    bottom: 20px;
+    right: 20px;
+  }
 }

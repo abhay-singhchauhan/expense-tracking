@@ -4,9 +4,11 @@ const cors = require("cors");
 const db = require("./util/db");
 const userModel = require("./models/user");
 const expenseModel = require("./models/expense");
+const orderModel = require("./models/order");
 
 const loginSignupRoute = require("./routes/login-signup");
 const expenseRoute = require("./routes/expense");
+const paymentRoute = require("./routes/payment");
 
 const auth = require("./middlewears/auth");
 
@@ -20,9 +22,11 @@ app.use(
   })
 );
 app.use(loginSignupRoute);
+userModel.hasOne(orderModel);
 
 app.use(auth.auth);
 
+app.use(paymentRoute);
 app.use(expenseRoute);
 
 userModel.hasMany(expenseModel);

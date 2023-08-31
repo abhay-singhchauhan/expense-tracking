@@ -1,26 +1,24 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const path = require("path");
 
-exports.auth = (req, res, next) => {
-  const key = fs.readFileSync(
-    path.join(__dirname, "../", "/key", "/private.key"),
-    "utf-8"
-  );
-  console.log(key);
+require("dotenv").config();
+
+exports.auth = async (req, res, next) => {
+  const key = process.env.jwt_secret;
+
   const user = jwt.verify(req.headers.authorization, key);
-  const userExisted = User.findAll({ where: { id: user.id } });
-  console.log(">>>>>>>", user.id);
+  const userExisted = await User.findAll({ where: { id: user.id } });
+
   if (userExisted.length !== 0) {
     if (!user) {
       res.json({
         message: "not auth to enter",
       });
-      console.log(res);
+
       throw new Error("Verification failed");
     } else {
       req.user = user.id;
+
       next();
     }
   } else {

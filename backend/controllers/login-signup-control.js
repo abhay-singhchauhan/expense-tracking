@@ -1,20 +1,17 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const path = require("path");
+require("dotenv").config();
 
 function auth(name, id) {
-  const key = fs.readFileSync(
-    path.join(__dirname, "../", "/key", "/private.key"),
-    "utf-8"
-  );
+  const key = process.env.jwt_secret;
+
   return jwt.sign({ name: name, id: id }, key);
 }
 
 exports.signup = async (req, res, next) => {
   const parsedData = req.body;
-  console.log(req);
+  req;
   try {
     const emailExists = await User.findAll({
       where: { email: parsedData.email },
@@ -27,6 +24,7 @@ exports.signup = async (req, res, next) => {
           const details = await User.create({
             name: parsedData.name,
             email: parsedData.email,
+            isPremium: false,
             password: hash,
           });
           res.json(details);
@@ -36,18 +34,18 @@ exports.signup = async (req, res, next) => {
       res.status(500).json({ error: true });
     }
   } catch (err) {
-    console.log("there are some problems", err);
+    "there are some problems", err;
   }
 };
 
 exports.login = async (req, res, next) => {
-  console.log(req.body);
+  req.body;
   const userExisted = await User.findAll({
     where: {
       email: req.body.email,
     },
   });
-  console.log(userExisted);
+  userExisted;
   if (userExisted.length === 0) {
     res.status(404).json({
       message: "User dosen't existed, please register yourself",
@@ -59,15 +57,16 @@ exports.login = async (req, res, next) => {
       userExisted[0].password,
       (error, success) => {
         if (success) {
-          console.log(success);
+          success;
 
           res.status(200).json({
             auth: auth(userExisted[0].name, userExisted[0].id),
             message: "Login Successfull",
             problem: "Success",
+            premium: userExisted[0].isPremium,
           });
         } else {
-          console.log(success);
+          success;
           res.status(401).json({
             message: "Please enter the correct password",
             problem: "UDE",

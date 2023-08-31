@@ -1,4 +1,5 @@
 const Expense = require("../models/expense");
+const User = require("../models/user");
 
 exports.addExpense = async (req, res) => {
   const { category, price, description } = req.body;
@@ -9,9 +10,7 @@ exports.addExpense = async (req, res) => {
       price: price,
       description: description,
     });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 exports.getExpenses = async (req, res, next) => {
@@ -21,23 +20,20 @@ exports.getExpenses = async (req, res, next) => {
         userId: req.user,
       },
     });
-
-    res.json(data);
-  } catch (err) {
-    console.log(">>>>> error", err);
-  }
+    const user = await User.findAll({ where: { id: req.user } });
+    res.json({ data: data, isPremium: user[0].isPremium });
+  } catch (err) {}
 };
 
 exports.deleteExpense = async (req, res, next) => {
   try {
-    console.log("params >>>>", req.params);
     const dataExists = await Expense.findAll({
       where: {
         id: req.params.id,
         userId: req.user,
       },
     });
-    console.log("dataExists >>>>>", dataExists);
+
     if (dataExists.length !== 0) {
       const done = await Expense.destroy({ where: { id: req.params.id } });
       if (done) {
@@ -54,7 +50,5 @@ exports.deleteExpense = async (req, res, next) => {
         message: "Cannot access this feature",
       });
     }
-  } catch (Err) {
-    console.log(Err);
-  }
+  } catch (Err) {}
 };

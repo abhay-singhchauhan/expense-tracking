@@ -15,11 +15,9 @@ form.addEventListener("submit", (e) => {
     }),
   })
     .then((res) => {
-      console.log(res.status);
       return res.json();
     })
     .then((res) => {
-      console.log(res);
       if (res.problem === "UDE") {
         p.innerText = res.message;
         p.style.color = "red";

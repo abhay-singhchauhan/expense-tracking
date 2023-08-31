@@ -27,7 +27,6 @@ async function sendSignUpData(e) {
       }
     } catch (err) {
       if (err.statusCode === 409) {
-        console.log(haa);
       }
     }
   } else {
