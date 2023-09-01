@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const totalExpense = require("../models/totalExpense");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -26,13 +25,8 @@ exports.signup = async (req, res, next) => {
             email: parsedData.email,
             isPremium: false,
             password: hash,
-          });
-          await totalExpense.create({
-            userId: details.id,
             total: 0,
-            name: parsedData.name,
           });
-          console.log(details);
           res.json(details);
         }
       });

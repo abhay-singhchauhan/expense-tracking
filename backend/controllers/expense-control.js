@@ -1,22 +1,27 @@
 const Expense = require("../models/expense");
 const User = require("../models/user");
-const totalExpense = require("../models/totalExpense");
+const sequelize = require("../util/db");
 
 exports.addExpense = async (req, res) => {
+  const t = await sequelize.transaction();
   const { category, price, description } = req.body;
   try {
-    await Expense.create({
-      userId: req.user,
-      category: category,
-      price: price,
-      description: description,
-    });
-    const total = await totalExpense.findAll({ where: { userId: req.user } });
-    await totalExpense.update(
-      { total: +total[0].total + +price },
-      { where: { UserId: req.user } }
+    await Expense.create(
+      {
+        userId: req.user,
+        category: category,
+        price: price,
+        description: description,
+      },
+      { transaction: t }
     );
-  } catch (error) {}
+    const user = await User.findByPk(req.user);
+    await user.update({ total: +user.total + +price }, { transaction: t });
+    await t.commit();
+  } catch (error) {
+    await t.rollback();
+    res.json(error);
+  }
 };
 
 exports.getExpenses = async (req, res, next) => {
@@ -32,6 +37,7 @@ exports.getExpenses = async (req, res, next) => {
 };
 
 exports.deleteExpense = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     const dataExists = await Expense.findAll({
       where: {
@@ -40,30 +46,17 @@ exports.deleteExpense = async (req, res, next) => {
       },
     });
 
-    if (dataExists.length !== 0) {
-      const expense = await Expense.findByPk(req.params.id);
-      const done = await Expense.destroy({ where: { id: req.params.id } });
-      console.log(done);
-      const totalU = await totalExpense.findAll({
-        where: { userId: req.user },
-      });
-      await totalExpense.update(
-        { total: +totalU[0].total - +expense.price },
-        { where: { userId: req.user } }
-      );
-      if (done) {
-        res.json({
-          message: "OK",
-        });
-      } else {
-        res.json({
-          message: "There is some problem",
-        });
-      }
-    } else {
-      res.json({
-        message: "Cannot access this feature",
-      });
-    }
-  } catch (Err) {}
+    await Expense.destroy({ where: { id: req.params.id } }, { transaction: t });
+    const user = await User.findByPk(req.user);
+    await User.update(
+      { total: +user.total - +dataExists[0].price },
+      { where: { id: req.user } },
+      { transaction: t }
+    );
+    await t.commit();
+    res.status(200).json({ message: "OK" });
+  } catch (err) {
+    await t.rollback();
+    res.json(err);
+  }
 };

@@ -24,6 +24,10 @@ const User = sequelize.define("user", {
     type: Sequelize.BOOLEAN,
     allowNull: false,
   },
+  total: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 });
 
 module.exports = User;

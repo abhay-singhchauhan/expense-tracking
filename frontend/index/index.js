@@ -189,13 +189,11 @@ outer.addEventListener("click", (e) => {
           return res.json();
         })
         .then((res) => {
-          if (res.message === "OK") {
-            e.target.parentElement.parentElement.remove();
-          } else {
-            alert(res.message);
-          }
+          e.target.parentElement.parentElement.remove();
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 });
@@ -217,7 +215,7 @@ lb_button.addEventListener("click", async () => {
     mainData.forEach((element) => {
       str += `<tr>
     <td>${element.name}</td>
-    <td>${element.total_cost}</td>
+    <td>${element.total}</td>
             </tr>`;
     });
     document.querySelector("tbody").innerHTML = str;
