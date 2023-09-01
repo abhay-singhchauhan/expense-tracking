@@ -3,10 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-function auth(name, id) {
+function auth(name, id, isPremium) {
   const key = process.env.jwt_secret;
-
-  return jwt.sign({ name: name, id: id }, key);
+  return jwt.sign({ name: name, id: id, isPremium: isPremium }, key);
 }
 
 exports.signup = async (req, res, next) => {
@@ -60,10 +59,13 @@ exports.login = async (req, res, next) => {
           success;
 
           res.status(200).json({
-            auth: auth(userExisted[0].name, userExisted[0].id),
+            auth: auth(
+              userExisted[0].name,
+              userExisted[0].id,
+              userExisted[0].isPremium
+            ),
             message: "Login Successfull",
             problem: "Success",
-            premium: userExisted[0].isPremium,
           });
         } else {
           success;

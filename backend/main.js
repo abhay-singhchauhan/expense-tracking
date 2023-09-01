@@ -9,6 +9,7 @@ const orderModel = require("./models/order");
 const loginSignupRoute = require("./routes/login-signup");
 const expenseRoute = require("./routes/expense");
 const paymentRoute = require("./routes/payment");
+const premiumRoute = require("./routes/premium");
 
 const auth = require("./middlewears/auth");
 
@@ -26,6 +27,7 @@ userModel.hasOne(orderModel);
 
 app.use(auth.auth);
 
+app.use("/premium", premiumRoute);
 app.use(paymentRoute);
 app.use(expenseRoute);
 

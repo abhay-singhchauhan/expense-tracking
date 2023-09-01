@@ -6,7 +6,36 @@ const form2 = document.getElementById("form");
 const cross = document.getElementById("cross");
 const cover = document.getElementById("cover");
 const premium = document.getElementById("Premium");
+const lb_button = document.getElementById("lb-button");
+
 //Site functionality
+
+window.onload = () => {
+  let token = JSON.parse(localStorage.getItem("userDataExpenseTrackerApp"));
+  token = token.auth;
+
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  let authtoken = JSON.parse(jsonPayload);
+  console.log(authtoken);
+  if (authtoken.isPremium) {
+    document.getElementById("premiumInfo").innerHTML =
+      "<button id='isPremium'>Premium Account</button>";
+  } else {
+    document.getElementById("main2").style.display = "none";
+  }
+};
+
 image.addEventListener("click", () => {
   image.setAttribute("class", "hidden");
   form2.setAttribute("class", "");
@@ -69,17 +98,26 @@ premium.addEventListener("click", () => {
         currency: res.order.currency,
         name: "Abhays Store",
         handler: async function (response) {
-          await axios.post(
-            "http://localhost:9000/updatestatus",
-            {
-              response,
-            },
-            {
-              headers: {
-                Authorization: token.auth,
+          await axios
+            .post(
+              "http://localhost:9000/updatestatus",
+              {
+                response,
               },
-            }
-          );
+              {
+                headers: {
+                  Authorization: token.auth,
+                },
+              }
+            )
+            .then((responseLast) => {
+              console.log(responseLast);
+              localStorage.setItem(
+                "userDataExpenseTrackerApp",
+                JSON.stringify({ auth: responseLast.data.auth })
+              );
+              location.reload();
+            });
         },
       };
       console.log(options);
@@ -106,9 +144,6 @@ function fetchData() {
     })
     .then((res) => {
       display(res.data);
-      if (res.isPremium) {
-        premium.innerText = "Premium User";
-      }
     })
     .catch((err) => {});
 }
@@ -163,4 +198,33 @@ outer.addEventListener("click", (e) => {
         .catch((err) => {});
     }
   }
+});
+
+lb_button.addEventListener("click", async () => {
+  if (lb_button.innerText == "Show Leaderboard") {
+    document.querySelector("table").setAttribute("class", "");
+    const data = await fetch(`http://localhost:9000/premium/leaderboard`, {
+      method: "GET",
+      headers: {
+        Authorization: token.auth,
+        "Content-type": "application/json",
+      },
+    });
+    const mainData = await data.json();
+    let str = "";
+    console.log(mainData);
+    console.log(mainData.PromiseResult);
+    mainData.forEach((element) => {
+      str += `<tr>
+    <td>${element.name}</td>
+    <td>${element.total_cost}</td>
+            </tr>`;
+    });
+    document.querySelector("tbody").innerHTML = str;
+    lb_button.innerText = "Hide Leaderboard";
+  } else {
+    lb_button.innerText = "Show Leaderboard";
+    document.querySelector("table").setAttribute("class", "hidden");
+  }
+  console.log("hi");
 });

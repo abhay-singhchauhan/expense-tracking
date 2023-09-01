@@ -1,7 +1,13 @@
 const Order = require("../models/order");
 const User = require("../models/user");
 const Razorpay = require("razorpay");
+const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
+function auth(name, id, isPremium) {
+  const key = process.env.jwt_secret;
+  return jwt.sign({ name: name, id: id, isPremium: isPremium }, key);
+}
 
 exports.payPremium = (req, res, next) => {
   try {
@@ -42,7 +48,9 @@ exports.updateStatus = async (req, res, next) => {
       { where: { id: razorpay_order_id } }
     );
     await User.update({ isPremium: true }, { where: { id: req.user } });
+    let user = await User.findAll({ where: { id: req.user } });
     res.json({
+      auth: auth(user[0].name, user[0].id, user[0].isPremium),
       message: "success",
     });
   } catch (err) {
