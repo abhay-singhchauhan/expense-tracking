@@ -5,6 +5,7 @@ const db = require("./util/db");
 const userModel = require("./models/user");
 const expenseModel = require("./models/expense");
 const orderModel = require("./models/order");
+const totalExpenseModel = require("./models/totalExpense");
 
 const loginSignupRoute = require("./routes/login-signup");
 const expenseRoute = require("./routes/expense");
@@ -32,6 +33,7 @@ app.use(paymentRoute);
 app.use(expenseRoute);
 
 userModel.hasMany(expenseModel);
+userModel.hasOne(totalExpenseModel);
 
 db.sync().then(() => {
   app.listen("9000");
