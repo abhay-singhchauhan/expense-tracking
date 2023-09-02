@@ -10,7 +10,7 @@ const loginSignupRoute = require("./routes/login-signup");
 const expenseRoute = require("./routes/expense");
 const paymentRoute = require("./routes/payment");
 const premiumRoute = require("./routes/premium");
-
+const password = require("./routes/password");
 const auth = require("./middlewears/auth");
 
 const app = express();
@@ -23,7 +23,7 @@ app.use(
   })
 );
 app.use(loginSignupRoute);
-
+app.use("/password", password);
 app.use(auth.auth);
 
 app.use("/premium", premiumRoute);

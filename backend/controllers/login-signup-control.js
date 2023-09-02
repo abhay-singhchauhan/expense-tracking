@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
             password: hash,
             total: 0,
           });
-          res.json(details);
+          res.status(200).json(details);
         }
       });
     } else {
