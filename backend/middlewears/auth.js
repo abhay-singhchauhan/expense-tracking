@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.auth = async (req, res, next) => {
+  console.log(">>>>>>hi everyone");
   const key = process.env.jwt_secret;
 
   const user = jwt.verify(req.headers.authorization, key);
