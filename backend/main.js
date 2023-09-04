@@ -6,6 +6,7 @@ const userModel = require("./models/user");
 const expenseModel = require("./models/expense");
 const orderModel = require("./models/order");
 const ForgotPasswordRequestsModel = require("./models/ForgotPasswordRequests");
+const downloadedFilesModel = require("./models/downloadedfiles");
 
 const loginSignupRoute = require("./routes/login-signup");
 const expenseRoute = require("./routes/expense");
@@ -31,6 +32,7 @@ app.use(expenseRoute);
 userModel.hasMany(orderModel);
 userModel.hasMany(expenseModel);
 userModel.hasMany(ForgotPasswordRequestsModel);
+userModel.hasMany(downloadedFilesModel);
 
 db.sync().then(() => {
   app.listen("9000");

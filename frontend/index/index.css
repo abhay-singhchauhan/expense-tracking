@@ -73,6 +73,8 @@ nav > #main > div > button:active {
   height: 30px;
 }
 #main2 > div {
+  display: flex;
+  justify-content: space-evenly;
   height: 100%;
   width: 60%;
   margin: auto;

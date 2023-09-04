@@ -1,6 +1,7 @@
 const Expense = require("../models/expense");
 const User = require("../models/user");
 const sequelize = require("../util/db");
+const aws = require("aws-sdk");
 
 exports.addExpense = async (req, res) => {
   const t = await sequelize.transaction();
@@ -59,4 +60,9 @@ exports.deleteExpense = async (req, res, next) => {
     await t.rollback();
     res.json(err);
   }
+};
+
+exports.download = async (req, res, next) => {
+  const expenses = await Expense.findAll({ where: { id: req.user } });
+  console.log(expenses);
 };

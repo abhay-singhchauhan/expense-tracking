@@ -7,7 +7,10 @@ const cross = document.getElementById("cross");
 const cover = document.getElementById("cover");
 const premium = document.getElementById("Premium");
 const lb_button = document.getElementById("lb-button");
-
+const sr_button = document.getElementById("sr-button");
+const sdf_button = document.getElementById("sdf-button");
+const premiumContent = document.getElementById("premiumContent");
+const th = document.querySelectorAll("th");
 //Site functionality
 
 window.onload = () => {
@@ -225,4 +228,55 @@ lb_button.addEventListener("click", async () => {
     document.querySelector("table").setAttribute("class", "hidden");
   }
   console.log("hi");
+});
+
+sr_button.addEventListener("click", async () => {
+  axios
+    .get("http://localhost:9000/premium/download", {
+      headers: { Authorization: token.auth },
+    })
+    .then((res) => {
+      console.log(res);
+      if (res.status == 200) {
+        console.log(res);
+        let a = document.createElement("a");
+        (a.href = res.data.fileURL), (a.download = "myexpense.csv");
+        a.click();
+      } else {
+        alert("failed to downlode, please try again later");
+      }
+    });
+});
+
+sdf_button.addEventListener("click", () => {
+  if (sdf_button.innerText === "Show file History") {
+    console.log("yes");
+    const tbody = document.querySelector("tbody");
+    axios
+      .get("http://localhost:9000/premium/filehistory", {
+        headers: { Authorization: token.auth },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          document.querySelector("table").setAttribute("class", "");
+          sdf_button.innerText = "Hide file History";
+          th[0].innerText = "Creating Date";
+          th[1].innerText = "Download Link";
+          let str = "";
+          for (let i = res.data.length - 1; i >= 0; i--) {
+            str += `<tr>
+                          <td>${res.data[i].createdAt}</td>
+                           <td><a href="${res.data[i].fileURL}">click here to download</a></td>
+                      </tr>`;
+          }
+          tbody.innerHTML = str;
+          console.log(res);
+        } else {
+          alert("There is some problem, please try again latter");
+        }
+      });
+  } else {
+    document.querySelector("table").setAttribute("class", "hidden");
+    sdf_button.innerText = "Show file History";
+  }
 });
