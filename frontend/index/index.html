@@ -14,7 +14,7 @@
         <div id="premiumInfo"><button id="Premium">Buy Premium</button></div>
       </div>
     </nav>
-    <div id="main2">
+    <div id="main2" class="hidden">
       <div>
         <div>
           <button id="lb-button">Show Leaderboard</button>
@@ -25,22 +25,20 @@
         <div>
           <button id="sdf-button">Show file History</button>
         </div>
+        <div>
+          <select name="content" id="content">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="40">40</option>
+            <option value="60">60</option>
+          </select>
+        </div>
       </div>
     </div>
     <div id="premiumContent">
-      <table border="1" class="hidden">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Expense</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <table border="1" class="hidden"></table>
     </div>
-    <main>
-      <div id="outer"></div>
-    </main>
+
     <div class="hidden" id="form">
       <button id="cross">X</button>
 
@@ -55,6 +53,11 @@
         <input type="text" placeholder="category" name="category" required />
         <button class="formButton">submit</button>
       </form>
+    </div>
+    <div id="pagination">
+      <div class="pbutton hidden">1</div>
+      <div class="pbutton">2</div>
+      <div class="pbutton hidden">3</div>
     </div>
     <img id="iconImage" src="../images/writeIcon.png.crdownload" alt="" />
   </body>

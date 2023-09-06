@@ -1,3 +1,4 @@
+const table = document.querySelector("table");
 const form = document.querySelector("form");
 const input = document.querySelectorAll("input");
 const outer = document.getElementById("outer");
@@ -11,6 +12,8 @@ const sr_button = document.getElementById("sr-button");
 const sdf_button = document.getElementById("sdf-button");
 const premiumContent = document.getElementById("premiumContent");
 const th = document.querySelectorAll("th");
+const pbutton = document.querySelectorAll(".pbutton");
+console.log(pbutton);
 //Site functionality
 
 window.onload = () => {
@@ -34,10 +37,15 @@ window.onload = () => {
   if (authtoken.isPremium) {
     document.getElementById("premiumInfo").innerHTML =
       "<button id='isPremium'>Premium Account</button>";
+    document.getElementById("main2").setAttribute("class", "");
   } else {
-    document.getElementById("main2").style.display = "none";
+    document.getElementById("main2").setAttribute("class", "hidden");
   }
 };
+
+if (localStorage.getItem("pageAtATime") === null) {
+  localStorage.setItem("pageAtATime", "10");
+}
 
 image.addEventListener("click", () => {
   image.setAttribute("class", "hidden");
@@ -66,21 +74,30 @@ if (token === null) {
 }
 
 function display(element) {
-  let outer = document.getElementById("outer");
-  let str = "";
+  console.log(">>>> Inside this function hmm");
+  document.querySelector("table").setAttribute("class", "");
+  let thead = document.createElement("thead");
+  let str = `<tr><th>Date Created</th>
+<th>Ammount</th>
+<th>Description</th>
+<th>Category</th>
+<th>Delete</th></tr>`;
+  thead.innerHTML = str;
+  let tbody = document.createElement("tbody");
+  let str2 = "";
   for (let i = element.length - 1; i >= 0; i--) {
-    str += ` <div id="${element[i].id}">
-    <div><h4>${element[i].createdAt}</h4></div>
-    <div >
-      <div><p>${element[i].price}</p></div>
-      <div><p>${element[i].description}</p></div>
-      <div><p>${element[i].category}</p></div>
-    </div>
-    <div class="delete"><p>Delete</p></div>
-  </div>`;
+    str2 += ` <tr id="${element[i].id}">
+    <td>${element[i].id}</td>
+<td>${element[i].createdAt}</td>
+<td>${element[i].price}</td>
+<td>${element[i].description}</td>
+<td>${element[i].category}</td>
+<td class="delete">Delete</td>
+</tr>`;
   }
-
-  outer.innerHTML = str;
+  tbody.innerHTML = str2;
+  document.querySelector("table").innerHTML = "";
+  document.querySelector("table").append(thead, tbody);
 }
 
 premium.addEventListener("click", () => {
@@ -136,8 +153,12 @@ premium.addEventListener("click", () => {
     .catch((err) => {});
 });
 
-function fetchData() {
-  fetch("http://localhost:9000/getexpenses", {
+function fetchData(page) {
+  console.log(page);
+  page = page || 1;
+  const pageAtATime = localStorage.getItem("pageAtATime");
+  console.log(pageAtATime);
+  fetch(`http://localhost:9000/getexpenses/${pageAtATime}?page=${page}`, {
     headers: {
       Authorization: token.auth,
     },
@@ -146,13 +167,39 @@ function fetchData() {
       return res.json();
     })
     .then((res) => {
+      console.log(res);
       display(res.data);
+      pbutton[1].innerText = res.obj.current;
+      if (res.obj.hasPrevious) {
+        pbutton[0].classList.remove("hidden");
+        pbutton[2].innerText = +res.obj.current - 1;
+      } else {
+        pbutton[0].className = "hidden pbutton";
+      }
+      if (res.obj.hasNext) {
+        pbutton[2].classList.remove("hidden");
+        pbutton[2].innerText = +res.obj.current + 1;
+      } else {
+        pbutton[2].className = "hidden pbutton";
+      }
     })
-    .catch((err) => {});
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 fetchData();
+document.querySelector("#pagination").addEventListener("click", (e) => {
+  if (e.target.classList.contains("pbutton")) {
+    console.log(">>> its here");
+    fetchData(e.target.innerText);
+  }
+});
 
+document.querySelector("#content").addEventListener("change", () => {
+  console.log(document.querySelector("#content").value);
+  localStorage.setItem("pageAtATime", document.querySelector("#content").value);
+});
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const obj = {
@@ -177,9 +224,11 @@ form.addEventListener("submit", (e) => {
     .catch((err) => {});
 });
 
-outer.addEventListener("click", (e) => {
-  if (e.target.parentElement.classList.contains("delete")) {
-    const id = e.target.parentElement.parentElement.id;
+table.addEventListener("click", (e) => {
+  console.log(e);
+  if (e.target.classList.contains("delete")) {
+    console.log("yes");
+    const id = e.target.parentElement.id;
     if (confirm("Are you sure, you want to delete this item")) {
       fetch(`http://localhost:9000/delete/${id}`, {
         method: "DELETE",
@@ -192,7 +241,7 @@ outer.addEventListener("click", (e) => {
           return res.json();
         })
         .then((res) => {
-          e.target.parentElement.parentElement.remove();
+          e.target.parentElement.remove();
         })
         .catch((err) => {
           console.log(err);
@@ -212,22 +261,32 @@ lb_button.addEventListener("click", async () => {
       },
     });
     const mainData = await data.json();
-    let str = "";
     console.log(mainData);
-    console.log(mainData.PromiseResult);
-    mainData.forEach((element) => {
-      str += `<tr>
-    <td>${element.name}</td>
-    <td>${element.total}</td>
-            </tr>`;
-    });
-    document.querySelector("tbody").innerHTML = str;
+    document.querySelector("table").setAttribute("class", "");
+    let thead = document.createElement("thead");
+    let str = `<tr>
+  <th>Rank</th>
+  <th>Name</th>
+  <th>Total</th>
+</tr>`;
+    thead.innerHTML = str;
+    let tbody = document.createElement("tbody");
+    let str2 = "";
+    for (let i = 0; i < mainData.length; i++) {
+      str2 += ` <tr>
+  <td>${i + 1}</td>
+  <td>${mainData[i].name}</td>
+  <td>${mainData[i].total}</td>
+  </tr>`;
+    }
+    tbody.innerHTML = str2;
+    document.querySelector("table").innerHTML = "";
+    document.querySelector("table").append(thead, tbody);
     lb_button.innerText = "Hide Leaderboard";
   } else {
     lb_button.innerText = "Show Leaderboard";
-    document.querySelector("table").setAttribute("class", "hidden");
+    fetchData();
   }
-  console.log("hi");
 });
 
 sr_button.addEventListener("click", async () => {
@@ -259,24 +318,31 @@ sdf_button.addEventListener("click", () => {
       .then((res) => {
         if (res.status === 200) {
           document.querySelector("table").setAttribute("class", "");
-          sdf_button.innerText = "Hide file History";
-          th[0].innerText = "Creating Date";
-          th[1].innerText = "Download Link";
-          let str = "";
-          for (let i = res.data.length - 1; i >= 0; i--) {
-            str += `<tr>
-                          <td>${res.data[i].createdAt}</td>
-                           <td><a href="${res.data[i].fileURL}">click here to download</a></td>
-                      </tr>`;
+          let thead = document.createElement("thead");
+          let str = `<tr>
+        <th>Create At</th>
+        <th>Download Link</th>
+        
+      </tr>`;
+          thead.innerHTML = str;
+          let tbody = document.createElement("tbody");
+          let str2 = "";
+          for (let i = 0; i < res.data.length; i++) {
+            str2 += ` <tr>
+        <td>${res.data[i].createdAt}</td>
+        <td><a href="${res.data[i].fileURL}">Clink here to Download</a></td>
+        </tr>`;
           }
-          tbody.innerHTML = str;
-          console.log(res);
+          tbody.innerHTML = str2;
+          document.querySelector("table").innerHTML = "";
+          document.querySelector("table").append(thead, tbody);
+          sdf_button.innerText = "Hide file History";
         } else {
           alert("There is some problem, please try again latter");
         }
       });
   } else {
-    document.querySelector("table").setAttribute("class", "hidden");
+    fetchData();
     sdf_button.innerText = "Show file History";
   }
 });

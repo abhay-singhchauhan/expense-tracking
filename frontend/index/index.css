@@ -92,57 +92,6 @@ main {
   margin-top: 20px;
 }
 
-#outer > div > div {
-  color: grey;
-  width: 100%;
-  text-align: center;
-}
-#outer > div > div:nth-child(1) {
-  margin-bottom: 10px;
-}
-#outer > div > div:nth-child(3) {
-  cursor: pointer;
-  margin: auto;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid grey;
-  width: 20%;
-  background-color: rgb(255, 255, 255);
-}
-#outer > div > div:nth-child(3):hover {
-  background-color: rgb(233, 228, 228);
-}
-
-#outer > div > div:nth-child(3):active {
-  background-color: rgb(221, 219, 219);
-}
-
-#outer > div > div:nth-child(2) {
-  padding: 10px 0 10px 0;
-  border-top: 1px solid grey;
-  border-bottom: 1px solid grey;
-  display: flex;
-  justify-content: space-around;
-}
-
-#outer > div > div div {
-  width: 30%;
-}
-#outer > div > div div:nth-child(1) {
-  border-right: 1px solid grey;
-}
-#outer > div > div div:nth-child(3) {
-  border-left: 1px solid grey;
-}
-#outer > div {
-  background-color: white;
-  margin: auto;
-  width: 60%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid grey;
-}
 /*form*/
 #form {
   z-index: 2;
@@ -232,11 +181,22 @@ input::placeholder {
   opacity: 0.8;
 }
 
+#pagination {
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 50%;
+}
+#pagination div {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(234, 229, 229);
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 1200px) {
   form {
-    width: 70%;
-  }
-  #outer > div {
     width: 70%;
   }
   #main {
@@ -254,9 +214,7 @@ input::placeholder {
   form {
     width: 80%;
   }
-  #outer > div {
-    width: 80%;
-  }
+
   #main {
     width: 80%;
   }
@@ -280,9 +238,7 @@ input::placeholder {
   form {
     width: 90%;
   }
-  #outer > div {
-    width: 90%;
-  }
+
   #main {
     width: 90%;
   }

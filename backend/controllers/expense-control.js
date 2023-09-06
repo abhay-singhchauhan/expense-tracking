@@ -26,15 +26,47 @@ exports.addExpense = async (req, res) => {
 };
 
 exports.getExpenses = async (req, res, next) => {
+  console.log(req.params.number, req.query.page);
   try {
+    const count = await Expense.count({ where: { userId: req.user } });
+    console.log(count);
+    let pages = Math.ceil(+count / +req.params.number);
+    let pages2 = pages;
+    let arr = [];
+    arr[0] = 0;
+    for (let i = 0; i < pages2; i++) {
+      arr[i + 1] = pages;
+      pages--;
+    }
+    console.log(arr);
+    oset = count - +req.query.page * +req.params.number - 1;
+    if (count - +req.query.page * +req.params.number - 1 < 0) {
+      oset = 0;
+    }
     const data = await Expense.findAll({
       where: {
         userId: req.user,
       },
+      offset: oset,
+      limit: +req.params.number,
     });
-    const user = await User.findAll({ where: { id: req.user } });
-    res.json({ data: data, isPremium: user[0].isPremium });
-  } catch (err) {}
+    // console.log(data);
+
+    let obj = { current: req.query.page };
+    if (req.query.page > 1) {
+      obj.hasPrevious = true;
+    } else {
+      obj.hasPrevious = false;
+    }
+    if (oset === 0) {
+      obj.hasNext = false;
+    } else {
+      obj.hasNext = true;
+    }
+    res.json({ data: data, obj });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.deleteExpense = async (req, res, next) => {
@@ -60,9 +92,4 @@ exports.deleteExpense = async (req, res, next) => {
     await t.rollback();
     res.json(err);
   }
-};
-
-exports.download = async (req, res, next) => {
-  const expenses = await Expense.findAll({ where: { id: req.user } });
-  console.log(expenses);
 };

@@ -4,8 +4,7 @@ const controller = require("../controllers/expense-control");
 const auth = require("../middlewears/auth");
 
 app.post("/addexpense", auth.auth, controller.addExpense);
-app.get("/getexpenses", auth.auth, controller.getExpenses);
+app.get("/getexpenses/:number", auth.auth, controller.getExpenses);
 app.delete("/delete/:id", auth.auth, controller.deleteExpense);
-app.get("/download", auth.auth, controller.download);
 
 module.exports = app;

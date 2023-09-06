@@ -13,9 +13,9 @@ const forgetpasswordmodel = require("../models/ForgotPasswordRequests");
 const bcrypt = require("bcrypt");
 
 exports.forgotPassword = async (req, res, next) => {
-  const User = await user.findAll({ where: { email: req.body.email } });
-  console.log(">>>>>>>>", User[0].id);
-  if (User) {
+  try {
+    const User = await user.findAll({ where: { email: req.body.email } });
+
     const apiInstance = new Sib.TransactionalEmailsApi();
     const sender = {
       email: "itsyourabhay@gmail.com",
@@ -26,28 +26,22 @@ exports.forgotPassword = async (req, res, next) => {
         email: req.body.email,
       },
     ];
-    try {
-      const fp = await forgetpasswordlink.create({
-        id: uuidv4(),
-        isActive: true,
-        userId: User[0].id,
-      });
-      const sendEmail = await apiInstance.sendTransacEmail({
-        sender,
-        to: receivers,
-        subject: "ese hi",
-        textContent: "hmm acha bete",
-        htmlContent: `<a href='http://localhost:9000/password/resetpassword/${fp.id}'><h1>password reset link</h1></a>`,
-      });
-      return res.send(sendEmail);
-    } catch (error) {
-      console.log(error);
-      return res.send(error);
-    }
-  } else {
-    res
-      .status(500)
-      .json({ message: "User dosen't exists, please create new account" });
+
+    const fp = await forgetpasswordlink.create({
+      id: uuidv4(),
+      isActive: true,
+      userId: User[0].id,
+    });
+    const sendEmail = await apiInstance.sendTransacEmail({
+      sender,
+      to: receivers,
+      subject: "ese hi",
+      textContent: "hmm acha bete",
+      htmlContent: `<a href='http://localhost:9000/password/resetpassword/${fp.id}'><h1>password reset link</h1></a>`,
+    });
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.json({ success: false });
   }
 };
 
