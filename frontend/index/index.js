@@ -13,9 +13,11 @@ const sdf_button = document.getElementById("sdf-button");
 const premiumContent = document.getElementById("premiumContent");
 const th = document.querySelectorAll("th");
 const pbutton = document.querySelectorAll(".pbutton");
-console.log(pbutton);
+const hoverdiv = document.getElementById("hoverdiv");
+
 //Site functionality
 
+//for checking if the user is premium user or not...
 window.onload = () => {
   let token = JSON.parse(localStorage.getItem("userDataExpenseTrackerApp"));
   token = token.auth;
@@ -31,51 +33,85 @@ window.onload = () => {
       })
       .join("")
   );
-
   let authtoken = JSON.parse(jsonPayload);
   console.log(authtoken);
   if (authtoken.isPremium) {
-    document.getElementById("premiumInfo").innerHTML =
-      "<button id='isPremium'>Premium Account</button>";
     document.getElementById("main2").setAttribute("class", "");
   } else {
     document.getElementById("main2").setAttribute("class", "hidden");
   }
 };
+//for checking if the user is premium user or not...
 
+//setting the default item per page
 if (localStorage.getItem("pageAtATime") === null) {
   localStorage.setItem("pageAtATime", "10");
 }
+//setting the default item per page
 
+//write icon clicking functionality
 image.addEventListener("click", () => {
   image.setAttribute("class", "hidden");
   form2.setAttribute("class", "");
   cover.setAttribute("class", "");
 });
+//write icon clicking functionality
 
+//form close icon clicking functionality
 cross.addEventListener("click", () => {
   image.setAttribute("class", "");
   form2.setAttribute("class", "hidden");
   cover.setAttribute("class", "hidden");
 });
+//form close icon clicking functionality
 
+//overlay icon clicking functionality
 cover.addEventListener("click", () => {
   image.setAttribute("class", "");
   form2.setAttribute("class", "hidden");
   cover.setAttribute("class", "hidden");
 });
+//overlay icon clicking functionality
 
-//api functionality
+//account info section mouse hover functionality
+document.getElementById("accountinfo").addEventListener("mouseover", () => {
+  hoverdiv.setAttribute("class", "");
+});
+document.getElementById("accountinfo").addEventListener("mouseout", () => {
+  hoverdiv.setAttribute("class", "hidden");
+});
+hoverdiv.addEventListener("mouseover", () => {
+  hoverdiv.setAttribute("class", "");
+});
+hoverdiv.addEventListener("mouseout", () => {
+  hoverdiv.setAttribute("class", "hidden");
+});
+//account info section mouse hover functionality
 
+//redirection to login page if the user token dosent exists
 let token = JSON.parse(localStorage.getItem("userDataExpenseTrackerApp"));
-
 if (token === null) {
   window.location = "../login/login.html";
 }
+//redirection to login page if the user token dosent exists
+
+//redirecting to home when clicked on logo
+document.getElementById("logoImage").addEventListener("click", () => {
+  window.location.reload();
+});
+//redirecting to home when clicked on logo
+
+//signout button
+document.getElementById("signout").addEventListener("click", () => {
+  localStorage.removeItem("userDataExpenseTrackerApp");
+  location.reload();
+});
+//signout button
 
 function display(element) {
   console.log(">>>> Inside this function hmm");
-  document.querySelector("table").setAttribute("class", "");
+  // document.querySelector("table").setAttribute("class", "");
+  document.querySelector("h2").innerText = "Your Expenses";
   let thead = document.createElement("thead");
   let str = `<tr><th>Date Created</th>
 <th>Ammount</th>
@@ -87,12 +123,14 @@ function display(element) {
   let str2 = "";
   for (let i = element.length - 1; i >= 0; i--) {
     str2 += ` <tr id="${element[i].id}">
-    <td>${element[i].id}</td>
-<td>${element[i].createdAt}</td>
+  
+<td>${element[i].createdAt.split("T")[0]} ${
+      element[i].createdAt.split("T")[1].split(".")[0]
+    }</td>
 <td>${element[i].price}</td>
 <td>${element[i].description}</td>
 <td>${element[i].category}</td>
-<td class="delete">Delete</td>
+<td class="delete" style="background-color:rgb(250, 64, 64); cursor: pointer" >Delete</td>
 </tr>`;
   }
   tbody.innerHTML = str2;
@@ -154,7 +192,6 @@ premium.addEventListener("click", () => {
 });
 
 function fetchData(page) {
-  console.log(page);
   page = page || 1;
   const pageAtATime = localStorage.getItem("pageAtATime");
   console.log(pageAtATime);
@@ -169,27 +206,31 @@ function fetchData(page) {
     .then((res) => {
       console.log(res);
       display(res.data);
-      pbutton[1].innerText = res.obj.current;
-      if (res.obj.hasPrevious) {
-        pbutton[0].classList.remove("hidden");
-        pbutton[2].innerText = +res.obj.current - 1;
+      document.getElementById("pagination").style.display = "flex";
+      if (!res.obj.hasNext) {
+        pbutton[2].setAttribute("class", "hidden pbutton");
       } else {
-        pbutton[0].className = "hidden pbutton";
-      }
-      if (res.obj.hasNext) {
         pbutton[2].classList.remove("hidden");
-        pbutton[2].innerText = +res.obj.current + 1;
-      } else {
-        pbutton[2].className = "hidden pbutton";
       }
+      console.log(res.obj);
+      if (!res.obj.hasPrevious) {
+        pbutton[0].setAttribute("class", "hidden pbutton");
+      } else {
+        pbutton[0].classList.remove("hidden");
+      }
+
+      pbutton[1].innerText = +res.obj.current;
+      pbutton[0].innerText = +res.obj.current - 1;
+      pbutton[2].innerText = +res.obj.current + 1;
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err, "error hai bhai");
     });
 }
 
 fetchData();
 document.querySelector("#pagination").addEventListener("click", (e) => {
+  console.log(e.target.classList);
   if (e.target.classList.contains("pbutton")) {
     console.log(">>> its here");
     fetchData(e.target.innerText);
@@ -199,7 +240,9 @@ document.querySelector("#pagination").addEventListener("click", (e) => {
 document.querySelector("#content").addEventListener("change", () => {
   console.log(document.querySelector("#content").value);
   localStorage.setItem("pageAtATime", document.querySelector("#content").value);
+  location.reload();
 });
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const obj = {
@@ -225,9 +268,7 @@ form.addEventListener("submit", (e) => {
 });
 
 table.addEventListener("click", (e) => {
-  console.log(e);
   if (e.target.classList.contains("delete")) {
-    console.log("yes");
     const id = e.target.parentElement.id;
     if (confirm("Are you sure, you want to delete this item")) {
       fetch(`http://localhost:9000/delete/${id}`, {
@@ -252,7 +293,6 @@ table.addEventListener("click", (e) => {
 
 lb_button.addEventListener("click", async () => {
   if (lb_button.innerText == "Show Leaderboard") {
-    document.querySelector("table").setAttribute("class", "");
     const data = await fetch(`http://localhost:9000/premium/leaderboard`, {
       method: "GET",
       headers: {
@@ -262,7 +302,7 @@ lb_button.addEventListener("click", async () => {
     });
     const mainData = await data.json();
     console.log(mainData);
-    document.querySelector("table").setAttribute("class", "");
+    document.getElementById("pagination").style.display = "none";
     let thead = document.createElement("thead");
     let str = `<tr>
   <th>Rank</th>
@@ -317,7 +357,7 @@ sdf_button.addEventListener("click", () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          document.querySelector("table").setAttribute("class", "");
+          document.getElementById("pagination").style.display = "none";
           let thead = document.createElement("thead");
           let str = `<tr>
         <th>Create At</th>

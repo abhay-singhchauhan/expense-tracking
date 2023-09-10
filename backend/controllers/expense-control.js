@@ -29,16 +29,7 @@ exports.getExpenses = async (req, res, next) => {
   console.log(req.params.number, req.query.page);
   try {
     const count = await Expense.count({ where: { userId: req.user } });
-    console.log(count);
-    let pages = Math.ceil(+count / +req.params.number);
-    let pages2 = pages;
-    let arr = [];
-    arr[0] = 0;
-    for (let i = 0; i < pages2; i++) {
-      arr[i + 1] = pages;
-      pages--;
-    }
-    console.log(arr);
+
     oset = count - +req.query.page * +req.params.number - 1;
     if (count - +req.query.page * +req.params.number - 1 < 0) {
       oset = 0;

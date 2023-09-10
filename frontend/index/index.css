@@ -1,34 +1,49 @@
+/*Extras*/
 * {
   padding: 0px;
   margin: 0px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
-h3 {
-  color: #b6e9e6;
+body {
+  background-color: #0d0d17;
 }
-nav {
-  height: 60px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background: rgb(67, 84, 244);
-  background: linear-gradient(
-    90deg,
-    rgba(67, 84, 244, 1) 0%,
-    rgba(31, 177, 192, 1) 100%
-  );
-}
+
 .hidden {
   display: none;
 }
 
 #cover {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   height: 100vh;
   width: 100vw;
   background-color: white;
   opacity: 0.5;
   cursor: pointer;
+}
+
+#backsupport {
+  height: 60px;
+}
+/*Extras*/
+
+/*///////////////////////*/
+
+/*Nav upper part*/
+nav {
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  background: #0d0d17;
+  background: linear-gradient(
+    133deg,
+    #121212 38%,
+    rgba(241, 38, 34, 1) 38%,
+    rgba(241, 88, 34, 1) 100%
+  );
+
+  box-shadow: rgba(235, 234, 234, 0.2) 0px 2px 8px 0px;
 }
 
 #main {
@@ -39,62 +54,138 @@ nav {
   justify-content: space-between;
   align-items: center;
 }
-#main div {
+
+#main > div {
+  cursor: pointer;
+  height: 60%;
   display: flex;
+  justify-content: center;
   align-items: center;
-  height: 80%;
   width: 20%;
 }
-#main div img {
-  cursor: pointer;
-  height: 100%;
-  width: 100%;
+#main > div:nth-child(2):hover {
+  opacity: 0.8;
 }
-nav > #main > div > button {
+#hoverdiv {
+  z-index: 1;
+  position: absolute;
+  top: 50px;
+  right: 10%;
+  padding: 10px;
+  background-color: #24262c;
+  border-radius: 10px;
+  width: 15%;
+}
+#hoverdiv button {
   cursor: pointer;
-  font-size: 17px;
-  background-color: rgb(218, 165, 32);
-  height: 80%;
+  padding: 5px;
   color: white;
-  border-radius: 20px;
-  width: 100%;
+  margin-bottom: 5px;
   border: 1px solid grey;
+  background-color: #191b21;
+  width: 100%;
+  border-radius: 5px;
 }
-nav > #main > div > button:hover {
-  background-color: rgb(228, 178, 52);
+#hoverdiv button:nth-child(2) {
+  background-color: goldenrod;
 }
-nav > #main > div > button:active {
-  background-color: rgb(236, 189, 73);
+#hoverdiv button:hover {
+  opacity: 0.8;
+  transition: 0.2s;
+}
+#hoverdiv button:active {
+  opacity: 0.7;
+  transition: 0.2s;
 }
 
+#main > div:nth-child(2) {
+  border: 1px solid white;
+  border-radius: 20px;
+}
+#main > div img {
+  margin: auto;
+  height: 100%;
+  backface-visibility: hidden;
+  mix-blend-mode: lighten;
+}
+#main > div p {
+  position: relative;
+  top: 20%;
+  color: white;
+}
+/*Nav upper part*/
+
+/*Premium section*/
 #main2 {
-  padding: 10px;
   width: 100%;
-  height: 30px;
+  height: 40px;
+  background-color: #212428;
 }
 #main2 > div {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
   height: 100%;
   width: 60%;
   margin: auto;
 }
 #main2 > div > div {
-  height: 100%;
+  height: 60%;
+  width: 30%;
+  text-align: center;
 }
 #main2 button {
   cursor: pointer;
-  padding: 5px;
+  border: 1px solid rgb(255, 232, 101);
+  background-color: rgb(18, 18, 18);
   height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  color: rgb(203, 200, 200);
 }
-/*main portion*/
-main {
-  margin-top: 20px;
+#main2 button:hover {
+  background-color: rgb(33, 33, 33);
+  transition: 0.2s;
+}
+#main2 button:active {
+  background-color: rgb(46, 46, 46);
+}
+/*Premium section*/
+
+/*main3*/
+#main3 {
+  height: 20px;
+  width: 60%;
+  margin: auto;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+select {
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
+  border: 1px solid grey;
+  border-radius: 10px;
+  color: grey;
+}
+/*main3*/
+
+/*Table*/
+#premiumContent > div:nth-child(1) {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+}
+#premiumContent > div:nth-child(1) div {
+  display: flex;
+  align-items: baseline;
+}
+.delete:hover {
+  opacity: 0.8;
 }
 
-/*form*/
 #form {
-  z-index: 2;
+  z-index: 3;
   background-color: aliceblue;
   position: fixed;
   bottom: 0%;
@@ -116,6 +207,7 @@ main {
   background-color: rgb(210, 91, 91);
   border: 1px solid grey;
   color: aliceblue;
+
   font-size: 23px;
 }
 #cross:hover {
@@ -126,7 +218,7 @@ form {
   margin: auto;
   width: 60%;
 }
-input {
+form input {
   margin-bottom: 10px;
   outline: none;
   padding-top: 20px;
@@ -186,11 +278,31 @@ input::placeholder {
   display: flex;
   justify-content: space-between;
   margin-left: 50%;
+  margin-bottom: 20px;
 }
 #pagination div {
   text-align: center;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
+}
+#pagination div button {
+  width: 100%;
+  height: 100%;
+  background: #0d0d17;
+  background: linear-gradient(
+    133deg,
+    rgba(241, 38, 34, 1) 38%,
+    rgba(241, 88, 34, 1) 100%
+  );
+  color: white;
+  border-radius: 10%;
+  border: 1px solid white;
+  cursor: pointer;
+}
+#pagination div:nth-child(2) {
+  text-align: center;
+  width: 30px;
+  height: 30px;
   background-color: rgb(234, 229, 229);
   cursor: pointer;
 }
@@ -205,8 +317,22 @@ input::placeholder {
   #main div {
     width: 30%;
   }
+  #hoverdiv {
+    width: 22%;
+  }
+  #main2 > div {
+    width: 70%;
+  }
   #cross {
     right: 40px;
+  }
+  nav {
+    background: linear-gradient(
+      133deg,
+      #121212 40%,
+      rgba(241, 38, 34, 1) 38%,
+      rgba(241, 88, 34, 1) 100%
+    );
   }
 }
 
@@ -220,6 +346,12 @@ input::placeholder {
   }
   #main div {
     width: 30%;
+  }
+  #hoverdiv {
+    width: 22%;
+  }
+  #main2 > div {
+    width: 80%;
   }
   #cross {
     right: 30px;
@@ -235,6 +367,17 @@ input::placeholder {
 } */
 
 @media only screen and (max-width: 600px) {
+  nav {
+    height: 60px;
+    background: #121212;
+    background: linear-gradient(
+      133deg,
+      #121212 40%,
+      rgba(241, 38, 34, 1) 38%,
+      rgba(241, 88, 34, 1) 100%
+    );
+  }
+
   form {
     width: 90%;
   }
@@ -242,9 +385,20 @@ input::placeholder {
   #main {
     width: 90%;
   }
-  #main div {
-    width: 40%;
+  #main div:nth-child(1) {
+    height: 50%;
   }
+  #hoverdiv {
+    width: 30%;
+    right: 1%;
+  }
+  #main2 > div {
+    width: 100%;
+  }
+  #main2 > div > div {
+    width: 33%;
+  }
+
   #cross {
     right: 10px;
   }
