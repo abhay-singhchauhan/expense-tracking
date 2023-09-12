@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const helmet = require("helmet");
 const db = require("./util/db");
 const userModel = require("./models/user");
 const expenseModel = require("./models/expense");
@@ -15,7 +15,7 @@ const premiumRoute = require("./routes/premium");
 const password = require("./routes/password");
 
 const app = express();
-
+app.use(helmet());
 app.use(express.json());
 
 app.use(
