@@ -224,7 +224,7 @@ function fetchData(page) {
       pbutton[2].innerText = +res.obj.current + 1;
     })
     .catch((err) => {
-      console.log(err, "error hai bhai");
+      res.json({ message: err });
     });
 }
 
