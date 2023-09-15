@@ -4,7 +4,7 @@ const p = document.querySelector("p");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  fetch("http://localhost:9000/login", {
+  fetch("http://54.91.77.43:9000/login", {
     method: "POST",
     headers: {
       "Content-type": "application/json",

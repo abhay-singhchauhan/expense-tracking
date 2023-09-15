@@ -7,7 +7,7 @@ async function sendSignUpData(e) {
   e.preventDefault();
   if (data[2].value.trim() === data[3].value.trim()) {
     try {
-      let response = await fetch("http://localhost:9000/signup", {
+      let response = await fetch("http://54.91.77.43:9000/signup", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
