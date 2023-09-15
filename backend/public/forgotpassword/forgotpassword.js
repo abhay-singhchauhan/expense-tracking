@@ -6,7 +6,7 @@ let main = document.querySelector("#main");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log(">>>>hihi");
-  let res1 = await fetch("http://localhost:9000/password/forgotpassword", {
+  let res1 = await fetch("http://54.91.77.43:9000/password/forgotpassword", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
