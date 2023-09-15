@@ -39,6 +39,7 @@ exports.forgotPassword = async (req, res, next) => {
       textContent: "hmm acha bete",
       htmlContent: `<a href='http://localhost:9000/password/resetpassword/${fp.id}'><h1>password reset link</h1></a>`,
     });
+
     res.status(200).json({ success: true });
   } catch (error) {
     res.json({ success: false });
@@ -60,21 +61,26 @@ exports.resetPassword = async (req, res, next) => {
 };
 
 exports.resetPasswordSubmit = async (req, res, next) => {
-  const findPassword = await forgetpasswordmodel.findAll({
-    where: { id: req.params.uuid },
-  });
-  if (findPassword[0].isActive) {
-    bcrypt.hash(req.body.password, 10, async (err, hash) => {
-      if (hash) {
-        await user.update(
-          { password: hash },
-          { where: { id: findPassword[0].userId } }
-        );
-        await findPassword[0].update({ isActive: false });
-        res.redirect("C:Projectsexpense-tracker\frontendloginlogin.html");
-      }
+  try {
+    const findPassword = await forgetpasswordmodel.findAll({
+      where: { id: req.params.uuid },
     });
-  } else {
-    res.status(500).send("please");
+    if (findPassword[0].isActive) {
+      bcrypt.hash(req.body.password, 10, async (err, hash) => {
+        if (hash) {
+          await user.update(
+            { password: hash },
+            { where: { id: findPassword[0].userId } }
+          );
+          await findPassword[0].update({ isActive: false });
+          res.json({ password: true });
+        }
+      });
+    } else {
+      res.status(500).send("please");
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({ err });
   }
 };

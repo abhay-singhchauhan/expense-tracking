@@ -1,15 +1,24 @@
+// const axios = require("axios");
 let form = document.querySelector("form");
 let input = document.querySelector("input");
 let main = document.querySelector("#main");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  let res = await axios.post("http://localhost:9000/password/forgotpassword", {
-    email: input.value,
+  console.log(">>>>hihi");
+  let res1 = await fetch("http://localhost:9000/password/forgotpassword", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      email: input.value,
+    }),
   });
-
+  console.log(">>>>hihi");
+  let res = await res1.json();
   console.log(res);
-  if (res.data.success === true) {
+  if (res.success === true) {
     form.style.display = "none";
     let p = document.createElement("h4");
     main.style.textAlign = "center";

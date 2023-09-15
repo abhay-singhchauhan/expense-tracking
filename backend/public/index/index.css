@@ -277,7 +277,7 @@ input::placeholder {
   width: 100px;
   display: flex;
   justify-content: space-between;
-  margin-left: 50%;
+  margin: auto;
   margin-bottom: 20px;
 }
 #pagination div {
@@ -397,6 +397,8 @@ input::placeholder {
   }
   #main2 > div > div {
     width: 33%;
+    margin: 5px;
+    font-size: 10px;
   }
 
   #cross {

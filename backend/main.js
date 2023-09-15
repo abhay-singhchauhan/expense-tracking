@@ -1,6 +1,7 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 const db = require("./util/db");
 const userModel = require("./models/user");
 const expenseModel = require("./models/expense");
@@ -15,7 +16,7 @@ const premiumRoute = require("./routes/premium");
 const password = require("./routes/password");
 
 const app = express();
-app.use(helmet());
+// app.use(helmet());
 app.use(express.json());
 
 app.use(
@@ -28,6 +29,9 @@ app.use("/password", password);
 app.use("/premium", premiumRoute);
 app.use(paymentRoute);
 app.use(expenseRoute);
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, req.url));
+});
 
 userModel.hasMany(orderModel);
 userModel.hasMany(expenseModel);
