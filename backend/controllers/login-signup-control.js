@@ -12,6 +12,7 @@ exports.signup = async (req, res, next) => {
   const parsedData = req.body;
   req;
   try {
+    console.log(">>>>", req.body);
     const emailExists = await User.findAll({
       where: { email: parsedData.email },
     });
