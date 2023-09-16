@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-// const helmet = require("helmet");
 const db = require("./util/db");
 const userModel = require("./models/user");
 const expenseModel = require("./models/expense");

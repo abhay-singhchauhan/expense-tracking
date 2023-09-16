@@ -1,10 +1,11 @@
 const input = document.querySelectorAll("input");
 const form = document.querySelector("form");
 const p = document.querySelector("p");
+require("dotenv").config();
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  fetch("http://54.91.77.43:9000/login", {
+  fetch(`http://${process.env.SITE_HOST}:9000/login`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",

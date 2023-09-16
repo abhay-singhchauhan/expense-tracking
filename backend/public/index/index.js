@@ -14,6 +14,7 @@ const premiumContent = document.getElementById("premiumContent");
 const th = document.querySelectorAll("th");
 const pbutton = document.querySelectorAll(".pbutton");
 const hoverdiv = document.getElementById("hoverdiv");
+require("dotenv").config();
 
 //Site functionality
 
@@ -139,7 +140,7 @@ function display(element) {
 }
 
 premium.addEventListener("click", () => {
-  fetch("http://54.91.77.43:9000/payforpremium", {
+  fetch(`http://${process.env.SITE_HOST}:9000/payforpremium`, {
     headers: {
       Authorization: token.auth,
     },
@@ -158,7 +159,7 @@ premium.addEventListener("click", () => {
         handler: async function (response) {
           await axios
             .post(
-              "http://54.91.77.43:9000/updatestatus",
+              `http://${process.env.SITE_HOST}:9000/updatestatus`,
               {
                 response,
               },
@@ -195,11 +196,14 @@ function fetchData(page) {
   page = page || 1;
   const pageAtATime = localStorage.getItem("pageAtATime");
   console.log(pageAtATime);
-  fetch(`http://54.91.77.43:9000/getexpenses/${pageAtATime}?page=${page}`, {
-    headers: {
-      Authorization: token.auth,
-    },
-  })
+  fetch(
+    `http://${process.env.SITE_HOST}:9000/getexpenses/${pageAtATime}?page=${page}`,
+    {
+      headers: {
+        Authorization: token.auth,
+      },
+    }
+  )
     .then((res) => {
       return res.json();
     })
@@ -250,7 +254,7 @@ form.addEventListener("submit", (e) => {
     category: input[2].value,
     description: input[1].value,
   };
-  fetch("http://54.91.77.43:9000/addexpense", {
+  fetch(`http://${process.env.SITE_HOST}:9000/addexpense`, {
     method: "POST",
     headers: {
       Authorization: token.auth,
@@ -271,7 +275,7 @@ table.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete")) {
     const id = e.target.parentElement.id;
     if (confirm("Are you sure, you want to delete this item")) {
-      fetch(`http://54.91.77.43:9000/delete/${id}`, {
+      fetch(`http://${process.env.SITE_HOST}:9000/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: token.auth,
@@ -293,13 +297,16 @@ table.addEventListener("click", (e) => {
 
 lb_button.addEventListener("click", async () => {
   if (lb_button.innerText == "Show Leaderboard") {
-    const data = await fetch(`http://54.91.77.43:9000/premium/leaderboard`, {
-      method: "GET",
-      headers: {
-        Authorization: token.auth,
-        "Content-type": "application/json",
-      },
-    });
+    const data = await fetch(
+      `http://${process.env.SITE_HOST}:9000/premium/leaderboard`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token.auth,
+          "Content-type": "application/json",
+        },
+      }
+    );
     const mainData = await data.json();
     console.log(mainData);
     document.getElementById("pagination").style.display = "none";
@@ -331,7 +338,7 @@ lb_button.addEventListener("click", async () => {
 
 sr_button.addEventListener("click", async () => {
   axios
-    .get("http://54.91.77.43:9000/premium/download", {
+    .get(`http://${process.env.SITE_HOST}:9000/premium/download`, {
       headers: { Authorization: token.auth },
     })
     .then((res) => {
@@ -352,7 +359,7 @@ sdf_button.addEventListener("click", () => {
     console.log("yes");
     const tbody = document.querySelector("tbody");
     axios
-      .get("http://54.91.77.43:9000/premium/filehistory", {
+      .get(`http://${process.env.SITE_HOST}:9000/premium/filehistory`, {
         headers: { Authorization: token.auth },
       })
       .then((res) => {

@@ -2,19 +2,23 @@
 let form = document.querySelector("form");
 let input = document.querySelector("input");
 let main = document.querySelector("#main");
+require("dotenv").config();
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log(">>>>hihi");
-  let res1 = await fetch("http://54.91.77.43:9000/password/forgotpassword", {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({
-      email: input.value,
-    }),
-  });
+  let res1 = await fetch(
+    `http://${process.env.SITE_HOST}:9000/password/forgotpassword`,
+    {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email: input.value,
+      }),
+    }
+  );
   console.log(">>>>hihi");
   let res = await res1.json();
   console.log(res);
