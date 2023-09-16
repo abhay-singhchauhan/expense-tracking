@@ -29,7 +29,15 @@ app.use("/premium", premiumRoute);
 app.use(paymentRoute);
 app.use(expenseRoute);
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, req.url));
+  let str = `/public/index/index.html
+  /public/index/index.css
+  /public/index/index.js`;
+  if (req.url === "/") {
+    res.sendFile(path.join(__dirname, str));
+  } else {
+    console.log(req.url);
+    res.sendFile(path.join(__dirname, req.url));
+  }
 });
 
 userModel.hasMany(orderModel);
