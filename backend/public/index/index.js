@@ -140,7 +140,7 @@ function display(element) {
 }
 
 premium.addEventListener("click", () => {
-  fetch(`http://${process.env.SITE_HOST}:9000/payforpremium`, {
+  fetch(`http://${process.env.SITE_HOST}${""}/payforpremium`, {
     headers: {
       Authorization: token.auth,
     },
@@ -159,7 +159,7 @@ premium.addEventListener("click", () => {
         handler: async function (response) {
           await axios
             .post(
-              `http://${process.env.SITE_HOST}:9000/updatestatus`,
+              `http://${process.env.SITE_HOST}${""}/updatestatus`,
               {
                 response,
               },
@@ -197,7 +197,9 @@ function fetchData(page) {
   const pageAtATime = localStorage.getItem("pageAtATime");
   console.log(pageAtATime);
   fetch(
-    `http://${process.env.SITE_HOST}:9000/getexpenses/${pageAtATime}?page=${page}`,
+    `http://${
+      process.env.SITE_HOST
+    }${""}/getexpenses/${pageAtATime}?page=${page}`,
     {
       headers: {
         Authorization: token.auth,
@@ -254,7 +256,7 @@ form.addEventListener("submit", (e) => {
     category: input[2].value,
     description: input[1].value,
   };
-  fetch(`http://${process.env.SITE_HOST}:9000/addexpense`, {
+  fetch(`http://${process.env.SITE_HOST}${""}/addexpense`, {
     method: "POST",
     headers: {
       Authorization: token.auth,
@@ -275,7 +277,7 @@ table.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete")) {
     const id = e.target.parentElement.id;
     if (confirm("Are you sure, you want to delete this item")) {
-      fetch(`http://${process.env.SITE_HOST}:9000/delete/${id}`, {
+      fetch(`http://${process.env.SITE_HOST}${""}/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: token.auth,
@@ -298,7 +300,7 @@ table.addEventListener("click", (e) => {
 lb_button.addEventListener("click", async () => {
   if (lb_button.innerText == "Show Leaderboard") {
     const data = await fetch(
-      `http://${process.env.SITE_HOST}:9000/premium/leaderboard`,
+      `http://${process.env.SITE_HOST}${""}/premium/leaderboard`,
       {
         method: "GET",
         headers: {
@@ -338,7 +340,7 @@ lb_button.addEventListener("click", async () => {
 
 sr_button.addEventListener("click", async () => {
   axios
-    .get(`http://${process.env.SITE_HOST}:9000/premium/download`, {
+    .get(`http://${process.env.SITE_HOST}${""}/premium/download`, {
       headers: { Authorization: token.auth },
     })
     .then((res) => {
@@ -359,7 +361,7 @@ sdf_button.addEventListener("click", () => {
     console.log("yes");
     const tbody = document.querySelector("tbody");
     axios
-      .get(`http://${process.env.SITE_HOST}:9000/premium/filehistory`, {
+      .get(`http://${process.env.SITE_HOST}${""}/premium/filehistory`, {
         headers: { Authorization: token.auth },
       })
       .then((res) => {

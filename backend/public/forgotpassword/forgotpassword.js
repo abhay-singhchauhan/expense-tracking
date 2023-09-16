@@ -8,7 +8,7 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log(">>>>hihi");
   let res1 = await fetch(
-    `http://${process.env.SITE_HOST}:9000/password/forgotpassword`,
+    `http://${process.env.SITE_HOST}${""}/password/forgotpassword`,
     {
       method: "POST",
       headers: {

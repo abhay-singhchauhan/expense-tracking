@@ -186,7 +186,7 @@ exports.resetResponse = (id) => {
     form.addEventListener("submit", (e) => {
 e.preventDefault()
       if (input[0].value === input[1].value) {
-        fetch("http://54.91.77.43:9000/password/resetpasswordsubmit/${id}", {
+        fetch("http://54.91.77.43${""}/password/resetpasswordsubmit/${id}", {
           method: "POST",
           headers: {
             "Content-type": "application/json",

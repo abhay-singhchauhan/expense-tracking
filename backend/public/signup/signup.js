@@ -8,7 +8,7 @@ async function sendSignUpData(e) {
   if (data[2].value.trim() === data[3].value.trim()) {
     try {
       let response = await fetch(
-        `http://${process.env.SITE_HOST}:9000/signup`,
+        `http://${process.env.SITE_HOST}${""}/signup`,
         {
           method: "POST",
           headers: {
