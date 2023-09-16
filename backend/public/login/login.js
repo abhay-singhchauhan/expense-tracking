@@ -5,7 +5,7 @@ require("dotenv").config();
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  fetch(`http://plum-mysterious-pike.cyclic.cloud/login`, {
+  fetch(`https://plum-mysterious-pike.cyclic.cloud/login`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",

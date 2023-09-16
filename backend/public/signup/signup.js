@@ -9,7 +9,7 @@ async function sendSignUpData(e) {
   if (data[2].value.trim() === data[3].value.trim()) {
     try {
       let response = await fetch(
-        `http://plum-mysterious-pike.cyclic.cloud/signup`,
+        `https://plum-mysterious-pike.cyclic.cloud/signup`,
         {
           method: "POST",
           headers: {
