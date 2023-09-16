@@ -29,9 +29,8 @@ app.use("/premium", premiumRoute);
 app.use(paymentRoute);
 app.use(expenseRoute);
 app.use((req, res) => {
-  let str = `/public/index/index.html
-  /public/index/index.css
-  /public/index/index.js`;
+  console.log(">>>>>>>>>>", req.url);
+  let str = `/public/index/index.html`;
   if (req.url === "/") {
     res.sendFile(path.join(__dirname, str));
   } else {

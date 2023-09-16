@@ -140,7 +140,7 @@ function display(element) {
 }
 
 premium.addEventListener("click", () => {
-  fetch(`http://${process.env.SITE_HOST}${""}/payforpremium`, {
+  fetch(`http://plum-mysterious-pike.cyclic.cloud/payforpremium`, {
     headers: {
       Authorization: token.auth,
     },
@@ -159,7 +159,7 @@ premium.addEventListener("click", () => {
         handler: async function (response) {
           await axios
             .post(
-              `http://${process.env.SITE_HOST}${""}/updatestatus`,
+              `http://plum-mysterious-pike.cyclic.cloud/updatestatus`,
               {
                 response,
               },
@@ -197,9 +197,7 @@ function fetchData(page) {
   const pageAtATime = localStorage.getItem("pageAtATime");
   console.log(pageAtATime);
   fetch(
-    `http://${
-      process.env.SITE_HOST
-    }${""}/getexpenses/${pageAtATime}?page=${page}`,
+    `http://plum-mysterious-pike.cyclic.cloud/getexpenses/${pageAtATime}?page=${page}`,
     {
       headers: {
         Authorization: token.auth,
@@ -256,7 +254,7 @@ form.addEventListener("submit", (e) => {
     category: input[2].value,
     description: input[1].value,
   };
-  fetch(`http://${process.env.SITE_HOST}${""}/addexpense`, {
+  fetch(`http://plum-mysterious-pike.cyclic.cloud/addexpense`, {
     method: "POST",
     headers: {
       Authorization: token.auth,
@@ -277,7 +275,7 @@ table.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete")) {
     const id = e.target.parentElement.id;
     if (confirm("Are you sure, you want to delete this item")) {
-      fetch(`http://${process.env.SITE_HOST}${""}/delete/${id}`, {
+      fetch(`http://plum-mysterious-pike.cyclic.cloud/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: token.auth,
@@ -300,7 +298,7 @@ table.addEventListener("click", (e) => {
 lb_button.addEventListener("click", async () => {
   if (lb_button.innerText == "Show Leaderboard") {
     const data = await fetch(
-      `http://${process.env.SITE_HOST}${""}/premium/leaderboard`,
+      `http://plum-mysterious-pike.cyclic.cloud/premium/leaderboard`,
       {
         method: "GET",
         headers: {
@@ -340,7 +338,7 @@ lb_button.addEventListener("click", async () => {
 
 sr_button.addEventListener("click", async () => {
   axios
-    .get(`http://${process.env.SITE_HOST}${""}/premium/download`, {
+    .get(`http://plum-mysterious-pike.cyclic.cloud/premium/download`, {
       headers: { Authorization: token.auth },
     })
     .then((res) => {
@@ -361,7 +359,7 @@ sdf_button.addEventListener("click", () => {
     console.log("yes");
     const tbody = document.querySelector("tbody");
     axios
-      .get(`http://${process.env.SITE_HOST}${""}/premium/filehistory`, {
+      .get(`http://plum-mysterious-pike.cyclic.cloud/premium/filehistory`, {
         headers: { Authorization: token.auth },
       })
       .then((res) => {

@@ -17,6 +17,7 @@ exports.signup = async (req, res, next) => {
     });
     if (emailExists.length === 0) {
       bcrypt.hash(parsedData.password, 10, async (err, hash) => {
+        console.log("hash>>>>", hash);
         if (err) {
           throw new Error("There is some problem");
         } else {
